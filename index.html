@@ -135,7 +135,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-// ✅ MAKE FIRESTORE GLOBAL
+// ✅ MAKE FIREBASE GLOBAL
 window.db = db;
 window.collection = collection;
 window.addDoc = addDoc;
