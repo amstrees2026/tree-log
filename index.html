@@ -73,9 +73,14 @@
 
 <button onclick="openTree()">Open Tree</button>
 
+<br><br>
+
+<!-- ✅ NEW BUTTON -->
+<button onclick="addTree()">🌱 Plant New Tree</button>
+
 </div>
 
-<!-- ✅ NORMAL SCRIPT (button logic) -->
+<!-- ✅ NORMAL SCRIPT -->
 <script>
 function openTree(){
     let id = document.getElementById("treeID").value.trim();
@@ -87,11 +92,35 @@ function openTree(){
 
     window.location = "tree.html?id=" + id;
 }
+
+// ✅ ADD TREE FUNCTION
+async function addTree(){
+    let id = document.getElementById("treeID").value.trim();
+
+    if(id === ""){
+        alert("Enter Tree ID first 🌱");
+        return;
+    }
+
+    try{
+        const docRef = await window.addDoc(window.collection(window.db, "trees"), {
+            treeID: id,
+            date: new Date().toISOString()
+        });
+
+        alert("🌳 Tree added successfully!");
+    }
+    catch(error){
+        console.error(error);
+        alert("Error adding tree ❌");
+    }
+}
 </script>
 
 <!-- ✅ FIREBASE MODULE -->
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyD2XTkILn4iMgR_LE6sDlqI_08NaTV5ebo",
@@ -104,8 +133,13 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 
-// ✅ VISUAL CONFIRMATION (so you KNOW it works)
+// ✅ MAKE FIRESTORE GLOBAL
+window.db = db;
+window.collection = collection;
+window.addDoc = addDoc;
+
 console.log("🔥 Firebase connected!");
 document.body.insertAdjacentHTML(
   "beforeend",
