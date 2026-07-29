@@ -88,6 +88,22 @@ window.location="tree.html?id="+id;
 
 }
 </script>
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 
+  const firebaseConfig = {
+    apiKey: "AIzaSyD2XTkILn4iMgR_LE6sDlqI_08NaTV5ebo",
+    authDomain: "tree-log-42cf3.firebaseapp.com",
+    projectId: "tree-log-42cf3",
+    storageBucket: "tree-log-42cf3.appspot.com",
+    messagingSenderId: "580957773231",
+    appId: "1:580957773231:web:d9a8301c3a869e157fa35a",
+    measurementId: "G-BL7Z12QN0M"
+  };
+
+  const app = initializeApp(firebaseConfig);
+
+  console.log("🔥 Firebase connected!");
+</script>
 </body>
 </html>
