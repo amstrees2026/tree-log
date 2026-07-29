@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tree Details</title>
+
+<style>
+body{
+    margin:0;
+    font-family:Arial;
+    background:#e8f5e9;
+    text-align:center;
+}
+
+header{
+    background:#2e7d32;
+    color:white;
+    padding:20px;
+    font-size:28px;
+}
+
+.card{
+    background:white;
+    width:90%;
+    max-width:600px;
+    margin:40px auto;
+    padding:25px;
+    border-radius:12px;
+    box-shadow:0 5px 15px rgba(0,0,0,.2);
+}
+</style>
+</head>
+
+<body>
+
+<header>🌳 Tree Details</header>
+
+<div class="card" id="treeData">
+Loading tree data...
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyD2XTkILn4iMgR_LE6sDlqI_08NaTV5ebo",
+  authDomain: "tree-log-42cf3.firebaseapp.com",
+  projectId: "tree-log-42cf3",
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+// ✅ GET ID FROM URL
+const params = new URLSearchParams(window.location.search);
+const id = params.get("id");
+
+// ✅ LOAD DATA FROM FIRESTORE
+async function loadTree(){
+    if(!id){
+        document.getElementById("treeData").innerHTML = "❌ No Tree ID provided";
+        return;
+    }
+
+    const docRef = doc(db, "trees", id);
+    const docSnap = await getDoc(docRef);
+
+    if(docSnap.exists()){
+        const data = docSnap.data();
+
+        document.getElementById("treeData").innerHTML = `
+            <h2>${id}</h2>
+            <p><b>Common Name:</b> ${data["Common Name"] || "N/A"}</p>
+            <p><b>Scientific Name:</b> ${data["Scientific Name"] || "N/A"}</p>
+            <p><b>Age:</b> ${data["Age"] || "N/A"}</p>
+            <p><b>Location:</b> ${data["Location"] || "N/A"}</p>
+        `;
+    }
+    else{
+        document.getElementById("treeData").innerHTML = "❌ Tree not found";
+    }
+}
+
+loadTree();
+</script>
+
+</body>
+</html>
