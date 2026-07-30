@@ -6,7 +6,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Tree Log Admin Login</title>
+<title>🔐 Tree Log Admin Login</title>
 
 <style>
 
@@ -17,7 +17,7 @@ body{
     display:flex;
     justify-content:center;
     align-items:center;
-    height:100vh;
+    min-height:100vh;
 }
 
 .card{
@@ -30,8 +30,13 @@ body{
     text-align:center;
 }
 
-h2{
+h1{
     color:#2e7d32;
+    margin-bottom:10px;
+}
+
+p{
+    color:#555;
 }
 
 input{
@@ -40,7 +45,7 @@ input{
     margin:10px 0;
     border:1px solid #999;
     border-radius:8px;
-    font-size:16px;
+    font-size:17px;
     box-sizing:border-box;
 }
 
@@ -60,9 +65,40 @@ button:hover{
     background:#1b5e20;
 }
 
+.back{
+    background:#1565c0;
+}
+
+.back:hover{
+    background:#0d47a1;
+}
+
 #status{
     margin-top:20px;
     font-weight:bold;
+}
+
+footer{
+    position:fixed;
+    bottom:15px;
+    left:15px;
+    font-size:13px;
+    color:#555;
+    line-height:1.5;
+}
+
+footer strong{
+    color:#2e7d32;
+}
+
+footer a{
+    color:#2e7d32;
+    text-decoration:none;
+    font-weight:bold;
+}
+
+footer a:hover{
+    text-decoration:underline;
 }
 
 </style>
@@ -73,16 +109,18 @@ button:hover{
 
 <div class="card">
 
-<h2>🔐 Tree Log Admin</h2>
+<h1>🔐 Tree Log Admin</h1>
+
+<p>Sign in to manage the Tree Log database.</p>
 
 <input
-id="email"
 type="email"
+id="email"
 placeholder="Admin Email">
 
 <input
-id="password"
 type="password"
+id="password"
 placeholder="Password">
 
 <button id="loginBtn">
@@ -91,9 +129,39 @@ Login
 
 </button>
 
+<br><br>
+
+<a href="index.html">
+
+<button
+type="button"
+class="back">
+
+⬅ Back to Tree Log
+
+</button>
+
+</a>
+
 <p id="status"></p>
 
 </div>
+
+<footer>
+
+<strong>Developed by Eshaan and Aksharan</strong><br>
+
+MAIS 2026<br>
+
+Developed for
+
+<a href="https://skylightworld.org/" target="_blank">
+
+Skylight World
+
+</a>
+
+</footer>
 
 <script type="module" src="login.js"></script>
 
