@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Tree Log Admin</title>
 
 <style>
@@ -16,17 +17,17 @@ body{
 header{
     background:#2e7d32;
     color:white;
-    padding:20px;
     text-align:center;
-    font-size:30px;
+    padding:20px;
+    font-size:36px;
     font-weight:bold;
 }
 
 .card{
-    background:white;
     width:90%;
     max-width:700px;
     margin:30px auto;
+    background:white;
     padding:25px;
     border-radius:15px;
     box-shadow:0 5px 15px rgba(0,0,0,.2);
@@ -35,10 +36,8 @@ header{
 input{
     width:100%;
     padding:12px;
-    margin:8px 0;
-    font-size:16px;
-    border-radius:8px;
-    border:1px solid #999;
+    margin:10px 0;
+    font-size:18px;
     box-sizing:border-box;
 }
 
@@ -50,7 +49,7 @@ button{
     color:white;
     border:none;
     border-radius:8px;
-    font-size:18px;
+    font-size:20px;
     cursor:pointer;
 }
 
@@ -59,23 +58,27 @@ button:hover{
 }
 
 #status{
-    margin-top:15px;
+    margin-top:20px;
+    font-size:18px;
+    color:green;
     font-weight:bold;
-    text-align:center;
 }
 
 </style>
+
 </head>
 
 <body>
 
-<header>🌳 Tree Log Admin</header>
+<header>
+🌳 Tree Log Admin
+</header>
 
 <div class="card">
 
 <h2>Add New Tree</h2>
 
-<input id="treeID" placeholder="Tree ID (Example: TR001)">
+<input id="treeID" placeholder="Tree ID (TR001)">
 
 <input id="commonName" placeholder="Common Name">
 
@@ -93,6 +96,7 @@ Save Tree
 
 </div>
 
+<!-- THIS LOADS admin.js -->
 <script type="module" src="admin.js"></script>
 
 </body>
