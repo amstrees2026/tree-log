@@ -53,7 +53,14 @@ button{
 button:hover{
     background:#1b5e20;
 }
+
+.footer{
+    margin-top:25px;
+    color:#666;
+    font-size:14px;
+}
 </style>
+
 </head>
 
 <body>
@@ -68,51 +75,73 @@ button:hover{
 
 <p>Enter a Tree ID or scan a QR Code.</p>
 
-<input id="treeID" placeholder="Example: TR001">
+<input
+id="treeID"
+placeholder="Example: TR001">
 
 <br>
 
-<button onclick="openTree()">Open Tree</button>
+<button onclick="openTree()">
+Open Tree
+</button>
 
 <br><br>
 
-<!-- Admin Login Button -->
 <a href="login.html">
-    <button type="button">🔐 Tree Log Admin</button>
+<button type="button">
+🔐 Tree Log Admin
+</button>
 </a>
+
+<div class="footer">
+Tree Log Management System
+</div>
 
 </div>
 
 <script>
+
 function openTree(){
 
     let id = document.getElementById("treeID").value.trim().toUpperCase();
 
-    if(id===""){
+    if(id==""){
+
         alert("Please enter a Tree ID 🌱");
         return;
+
     }
 
-    window.location = "tree.html?id=" + id;
+    window.location.href="tree.html?id="+id;
 
 }
+
 </script>
 
 <script type="module">
+
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 
 const firebaseConfig = {
+
     apiKey: "AIzaSyD2XTkILn4iMgR_LE6sDlqI_08NaTV5ebo",
+
     authDomain: "tree-log-42cf3.firebaseapp.com",
+
     projectId: "tree-log-42cf3",
+
     storageBucket: "tree-log-42cf3.firebasestorage.app",
+
     messagingSenderId: "580957773231",
+
     appId: "1:580957773231:web:d9a8301c3a869e157fa35a"
+
 };
 
 initializeApp(firebaseConfig);
 
 console.log("🔥 Firebase Connected");
+
 </script>
 
 </body>
