@@ -8,7 +8,7 @@
 <style>
 body{
     margin:0;
-    font-family:Arial;
+    font-family:Arial,Helvetica,sans-serif;
     background:#e8f5e9;
     text-align:center;
 }
@@ -17,19 +17,36 @@ header{
     background:#2e7d32;
     color:white;
     padding:20px;
-    font-size:28px;
+    font-size:30px;
+    font-weight:bold;
 }
 
 .card{
     background:white;
     width:90%;
-    max-width:600px;
+    max-width:650px;
     margin:40px auto;
     padding:25px;
-    border-radius:12px;
+    border-radius:15px;
     box-shadow:0 5px 15px rgba(0,0,0,.2);
 }
+
+img{
+    width:100%;
+    max-width:350px;
+    border-radius:10px;
+    margin:20px 0;
+}
+
+#qrcode{
+    margin-top:20px;
+    display:flex;
+    justify-content:center;
+}
 </style>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
 </head>
 
 <body>
@@ -41,6 +58,7 @@ Loading tree data...
 </div>
 
 <script type="module">
+
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
@@ -53,37 +71,61 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-// ✅ GET ID FROM URL
+// Get Tree ID
 const params = new URLSearchParams(window.location.search);
 const id = params.get("id");
 
-// ✅ LOAD DATA FROM FIRESTORE
 async function loadTree(){
+
     if(!id){
-        document.getElementById("treeData").innerHTML = "❌ No Tree ID provided";
+        document.getElementById("treeData").innerHTML="❌ No Tree ID Provided";
         return;
     }
 
-    const docRef = doc(db, "trees", id);
-    const docSnap = await getDoc(docRef);
+    const docRef=doc(db,"trees",id);
+    const docSnap=await getDoc(docRef);
 
     if(docSnap.exists()){
-        const data = docSnap.data();
 
-        document.getElementById("treeData").innerHTML = `
+        const data=docSnap.data();
+
+        document.getElementById("treeData").innerHTML=`
+
             <h2>${id}</h2>
+
+            <img src="images/${id}.jpg"
+                 onerror="this.src='images/default.jpg'">
+
             <p><b>Common Name:</b> ${data["Common Name"] || "N/A"}</p>
+
             <p><b>Scientific Name:</b> ${data["Scientific Name"] || "N/A"}</p>
+
             <p><b>Age:</b> ${data["Age"] || "N/A"}</p>
+
             <p><b>Location:</b> ${data["Location"] || "N/A"}</p>
+
+            <h3>Scan QR Code</h3>
+
+            <div id="qrcode"></div>
+
         `;
+
+        new QRCode(document.getElementById("qrcode"),{
+            text:window.location.href,
+            width:180,
+            height:180
+        });
+
+    }else{
+
+        document.getElementById("treeData").innerHTML="❌ Tree Not Found";
+
     }
-    else{
-        document.getElementById("treeData").innerHTML = "❌ Tree not found";
-    }
+
 }
 
 loadTree();
+
 </script>
 
 </body>
