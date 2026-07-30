@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Tree Log Admin</title>
+<title>Tree Log Admin Login</title>
 
 <style>
 
@@ -12,40 +12,39 @@ body{
     margin:0;
     font-family:Arial,Helvetica,sans-serif;
     background:#e8f5e9;
-}
-
-header{
-    background:#2e7d32;
-    color:white;
-    text-align:center;
-    padding:20px;
-    font-size:36px;
-    font-weight:bold;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
 }
 
 .card{
-    width:90%;
-    max-width:700px;
-    margin:30px auto;
     background:white;
-    padding:25px;
+    width:90%;
+    max-width:400px;
+    padding:30px;
     border-radius:15px;
     box-shadow:0 5px 15px rgba(0,0,0,.2);
+    text-align:center;
+}
+
+h2{
+    color:#2e7d32;
 }
 
 input{
     width:100%;
     padding:12px;
     margin:10px 0;
-    font-size:18px;
-    border:1px solid #999;
+    font-size:16px;
     border-radius:8px;
+    border:1px solid #999;
     box-sizing:border-box;
 }
 
 button{
     width:100%;
-    padding:14px;
+    padding:12px;
     margin-top:15px;
     background:#2e7d32;
     color:white;
@@ -59,18 +58,9 @@ button:hover{
     background:#1b5e20;
 }
 
-.secondary{
-    background:#1976d2;
-}
-
-.secondary:hover{
-    background:#0d47a1;
-}
-
 #status{
-    margin-top:20px;
-    font-size:18px;
-    color:green;
+    margin-top:15px;
+    color:red;
     font-weight:bold;
 }
 
@@ -80,39 +70,29 @@ button:hover{
 
 <body>
 
-<header>
-🌳 Tree Log Admin
-</header>
-
 <div class="card">
 
-<h2>Add New Tree</h2>
+<h2>🔐 Tree Log Admin</h2>
 
-<input id="treeID" placeholder="Tree ID (TR001)">
-<input id="commonName" placeholder="Common Name">
-<input id="scientificName" placeholder="Scientific Name">
-<input id="age" placeholder="Age">
-<input id="location" placeholder="Location">
+<input
+id="email"
+type="email"
+placeholder="Admin Email">
 
-<button id="saveBtn">
-💾 Save Tree
+<input
+id="password"
+type="password"
+placeholder="Password">
+
+<button id="loginBtn">
+Login
 </button>
 
 <p id="status"></p>
 
-<hr>
-
-<button class="secondary" onclick="location.href='index.html'">
-🏠 Back to Tree Log
-</button>
-
-<button class="secondary" onclick="location.href='tree.html?id=TR001'">
-🌳 Test Tree Page
-</button>
-
 </div>
 
-<script type="module" src="admin.js"></script>
+<script type="module" src="login.js"></script>
 
 </body>
 </html>
