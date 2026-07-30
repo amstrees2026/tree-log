@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tree Log Admin</title>
+
+<style>
+body{
+    margin:0;
+    font-family:Arial,Helvetica,sans-serif;
+    background:#e8f5e9;
+}
+
+header{
+    background:#2e7d32;
+    color:white;
+    padding:20px;
+    text-align:center;
+    font-size:30px;
+    font-weight:bold;
+}
+
+.card{
+    background:white;
+    width:90%;
+    max-width:600px;
+    margin:40px auto;
+    padding:30px;
+    border-radius:15px;
+    box-shadow:0 5px 15px rgba(0,0,0,.2);
+}
+
+input{
+    width:100%;
+    padding:12px;
+    margin:10px 0;
+    font-size:16px;
+    border:1px solid #999;
+    border-radius:8px;
+    box-sizing:border-box;
+}
+
+button{
+    width:100%;
+    padding:14px;
+    background:#2e7d32;
+    color:white;
+    border:none;
+    border-radius:8px;
+    font-size:18px;
+    cursor:pointer;
+}
+
+button:hover{
+    background:#1b5e20;
+}
+
+#status{
+    margin-top:20px;
+    font-weight:bold;
+    text-align:center;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+🌳 Tree Log Admin
+</header>
+
+<div class="card">
+
+<h2>Add New Tree</h2>
+
+<input id="treeID" placeholder="Tree ID (Example: TR001)">
+
+<input id="commonName" placeholder="Common Name">
+
+<input id="scientificName" placeholder="Scientific Name">
+
+<input id="age" placeholder="Age">
+
+<input id="location" placeholder="Location">
+
+<button onclick="saveTree()">
+💾 Save Tree
+</button>
+
+<div id="status"></div>
+
+</div>
+
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import {
+getFirestore,
+doc,
+setDoc
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyD2XTkILn4iMgR_LE6sDlqI_08NaTV5ebo",
+  authDomain: "tree-log-42cf3.firebaseapp.com",
+  projectId: "tree-log-42cf3",
+  storageBucket: "tree-log-42cf3.appspot.com",
+  messagingSenderId: "580957773231",
+  appId: "1:580957773231:web:d9a8301c3a869e157fa35a"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+window.saveTree = async function(){
+
+    const treeID = document.getElementById("treeID").value.trim();
+
+    if(treeID==""){
+        alert("Please enter a Tree ID.");
+        return;
+    }
+
+    await setDoc(doc(db,"trees",treeID),{
+
+        "Common Name":document.getElementById("commonName").value,
+
+        "Scientific Name":document.getElementById("scientificName").value,
+
+        "Age":document.getElementById("age").value,
+
+        "Location":document.getElementById("location").value
+
+    });
+
+    document.getElementById("status").innerHTML=
+    "✅ Tree Saved Successfully!";
+
+    document.getElementById("treeID").value="";
+    document.getElementById("commonName").value="";
+    document.getElementById("scientificName").value="";
+    document.getElementById("age").value="";
+    document.getElementById("location").value="";
+}
+
+</script>
+
+</body>
+</html>
