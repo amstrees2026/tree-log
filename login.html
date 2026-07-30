@@ -17,19 +17,24 @@ body{
 }
 
 .card{
-    background:white;
     width:90%;
     max-width:400px;
+    background:white;
     padding:30px;
     border-radius:15px;
     box-shadow:0 5px 15px rgba(0,0,0,.2);
     text-align:center;
 }
 
+h2{
+    color:#2e7d32;
+}
+
 input{
     width:100%;
     padding:12px;
     margin:10px 0;
+    font-size:16px;
     border-radius:8px;
     border:1px solid #999;
     box-sizing:border-box;
@@ -38,6 +43,7 @@ input{
 button{
     width:100%;
     padding:12px;
+    margin-top:15px;
     background:#2e7d32;
     color:white;
     border:none;
@@ -49,6 +55,11 @@ button{
 button:hover{
     background:#1b5e20;
 }
+
+#status{
+    margin-top:15px;
+    font-weight:bold;
+}
 </style>
 
 </head>
@@ -57,11 +68,17 @@ button:hover{
 
 <div class="card">
 
-<h2>🔐 Admin Login</h2>
+<h2>🔐 Tree Log Admin Login</h2>
 
-<input id="email" type="email" placeholder="Email">
+<input
+id="email"
+type="email"
+placeholder="Email">
 
-<input id="password" type="password" placeholder="Password">
+<input
+id="password"
+type="password"
+placeholder="Password">
 
 <button id="loginBtn">
 Login
