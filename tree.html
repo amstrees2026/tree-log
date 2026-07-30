@@ -1,11 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Tree Details</title>
 
 <style>
+
 body{
     margin:0;
     font-family:Arial,Helvetica,sans-serif;
@@ -17,27 +20,26 @@ header{
     background:#2e7d32;
     color:white;
     padding:20px;
-    font-size:30px;
+    font-size:32px;
     font-weight:bold;
 }
 
 .card{
     background:white;
     width:90%;
-    max-width:650px;
+    max-width:700px;
     margin:40px auto;
-    padding:25px;
+    padding:30px;
     border-radius:15px;
     box-shadow:0 5px 15px rgba(0,0,0,.2);
 }
 
 img{
     width:100%;
-    max-width:350px;
+    max-width:400px;
     border-radius:12px;
     margin:20px auto;
     display:block;
-    box-shadow:0 4px 10px rgba(0,0,0,.2);
 }
 
 p{
@@ -45,26 +47,26 @@ p{
     margin:10px 0;
 }
 
-#qrcode{
-    margin-top:20px;
-    display:flex;
-    justify-content:center;
-}
-
 button{
-    margin-top:25px;
-    padding:12px 25px;
     background:#2e7d32;
     color:white;
     border:none;
+    padding:12px 25px;
     border-radius:8px;
-    font-size:17px;
     cursor:pointer;
+    font-size:18px;
 }
 
 button:hover{
     background:#1b5e20;
 }
+
+#qrcode{
+    margin-top:25px;
+    display:flex;
+    justify-content:center;
+}
+
 </style>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
@@ -73,89 +75,112 @@ button:hover{
 
 <body>
 
-<header>🌳 Tree Details</header>
+<header>
+🌳 Tree Details
+</header>
 
 <div class="card" id="treeData">
-Loading tree data...
+
+Loading tree...
+
 </div>
+
+<br>
+
+<button onclick="window.location='index.html'">
+⬅ Back
+</button>
 
 <script type="module">
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-const firebaseConfig = {
-  apiKey: "AIzaSyD2XTkILn4iMgR_LE6sDlqI_08NaTV5ebo",
-  authDomain: "tree-log-42cf3.firebaseapp.com",
-  projectId: "tree-log-42cf3",
-  storageBucket: "tree-log-42cf3.appspot.com",
-  messagingSenderId: "580957773231",
-  appId: "1:580957773231:web:d9a8301c3a869e157fa35a"
+import {
+getFirestore,
+doc,
+getDoc
+}
+from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const firebaseConfig={
+
+apiKey:"AIzaSyD2XTkILn4iMgR_LE6sDlqI_08NaTV5ebo",
+
+authDomain:"tree-log-42cf3.firebaseapp.com",
+
+projectId:"tree-log-42cf3",
+
+storageBucket:"tree-log-42cf3.firebasestorage.app",
+
+messagingSenderId:"580957773231",
+
+appId:"1:580957773231:web:d9a8301c3a869e157fa35a"
+
 };
 
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+const app=initializeApp(firebaseConfig);
 
-const params = new URLSearchParams(window.location.search);
-const id = params.get("id");
+const db=getFirestore(app);
+
+const params=new URLSearchParams(window.location.search);
+
+const id=params.get("id");
 
 async function loadTree(){
 
-    if(!id){
-        document.getElementById("treeData").innerHTML="<h2>❌ No Tree ID Provided</h2>";
-        return;
-    }
+if(!id){
 
-    const docRef = doc(db,"trees",id);
-    const docSnap = await getDoc(docRef);
+document.getElementById("treeData").innerHTML="❌ No Tree ID Provided";
 
-    if(docSnap.exists()){
+return;
 
-        const data = docSnap.data();
+}
 
-        document.getElementById("treeData").innerHTML = `
-            <h2>🌳 ${id}</h2>
+const ref=doc(db,"trees",id);
 
-            <img src="images/${id}.jpg"
-                 alt="Tree Image"
-                 onerror="this.src='images/default.jpg'">
+const snap=await getDoc(ref);
 
-            <p><strong>🌿 Common Name:</strong> ${data["Common Name"] || "N/A"}</p>
+if(!snap.exists()){
 
-            <p><strong>🔬 Scientific Name:</strong> ${data["Scientific Name"] || "N/A"}</p>
+document.getElementById("treeData").innerHTML="❌ Tree Not Found";
 
-            <p><strong>🎂 Age:</strong> ${data["Age"] || "N/A"}</p>
+return;
 
-            <p><strong>📍 Location:</strong> ${data["Location"] || "N/A"}</p>
+}
 
-            <h3>📱 Scan this QR Code</h3>
+const tree=snap.data();
 
-            <div id="qrcode"></div>
+document.getElementById("treeData").innerHTML=`
 
-            <button onclick="window.location='index.html'">
-                ⬅ Back to Home
-            </button>
-        `;
+<h2>${id}</h2>
 
-        new QRCode(document.getElementById("qrcode"),{
-            text: window.location.href,
-            width:200,
-            height:200,
-            colorDark:"#2e7d32",
-            colorLight:"#ffffff",
-            correctLevel:QRCode.CorrectLevel.H
-        });
+<img
+src="images/${id}.jpg"
+onerror="this.src='images/default.jpg'">
 
-    }else{
+<p><b>Common Name:</b> ${tree["Common Name"]||"N/A"}</p>
 
-        document.getElementById("treeData").innerHTML = `
-            <h2>❌ Tree Not Found</h2>
-            <button onclick="window.location='index.html'">
-                ⬅ Back to Home
-            </button>
-        `;
+<p><b>Scientific Name:</b> ${tree["Scientific Name"]||"N/A"}</p>
 
-    }
+<p><b>Age:</b> ${tree["Age"]||"N/A"}</p>
+
+<p><b>Location:</b> ${tree["Location"]||"N/A"}</p>
+
+<h3>QR Code</h3>
+
+<div id="qrcode"></div>
+
+`;
+
+new QRCode(document.getElementById("qrcode"),{
+
+text:window.location.href,
+
+width:180,
+
+height:180
+
+});
 
 }
 
