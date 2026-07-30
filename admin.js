@@ -8,10 +8,10 @@ import {
 
 import {
     getAuth,
-    onAuthStateChanged
+    onAuthStateChanged,
+    signOut
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
-// Firebase Configuration
 const firebaseConfig = {
 
     apiKey: "AIzaSyD2XTkILn4iMgR_LE6sDlqI_08NaTV5ebo",
@@ -28,7 +28,6 @@ const firebaseConfig = {
 
 };
 
-// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
 const db = getFirestore(app);
@@ -36,30 +35,30 @@ const db = getFirestore(app);
 const auth = getAuth(app);
 
 // Protect Admin Page
-onAuthStateChanged(auth, (user) => {
+onAuthStateChanged(auth,(user)=>{
 
-    if (!user) {
+    if(!user){
 
-        window.location.href = "login.html";
+        window.location.href="login.html";
 
     }
 
 });
 
-// Save Button
-document.getElementById("saveBtn").addEventListener("click", saveTree);
+// Save Tree
+document.getElementById("saveBtn").addEventListener("click",saveTree);
 
 async function saveTree(){
 
-    const treeID = document.getElementById("treeID").value.trim().toUpperCase();
+    const treeID=document.getElementById("treeID").value.trim().toUpperCase();
 
-    const commonName = document.getElementById("commonName").value.trim();
+    const commonName=document.getElementById("commonName").value.trim();
 
-    const scientificName = document.getElementById("scientificName").value.trim();
+    const scientificName=document.getElementById("scientificName").value.trim();
 
-    const age = document.getElementById("age").value.trim();
+    const age=document.getElementById("age").value.trim();
 
-    const location = document.getElementById("location").value.trim();
+    const location=document.getElementById("location").value.trim();
 
     if(treeID===""){
 
@@ -73,21 +72,20 @@ async function saveTree(){
 
         await setDoc(doc(db,"trees",treeID),{
 
-            "Common Name": commonName,
+            "Common Name":commonName,
 
-            "Scientific Name": scientificName,
+            "Scientific Name":scientificName,
 
-            "Age": age,
+            "Age":age,
 
-            "Location": location
+            "Location":location
 
         });
 
         document.getElementById("status").style.color="green";
 
-        document.getElementById("status").innerHTML="✅ Tree Saved Successfully!";
+        document.getElementById("status").innerHTML="✅ Tree saved successfully.";
 
-        // Clear form
         document.getElementById("treeID").value="";
         document.getElementById("commonName").value="";
         document.getElementById("scientificName").value="";
@@ -103,5 +101,16 @@ async function saveTree(){
         document.getElementById("status").innerHTML=error.message;
 
     }
+
+}
+
+// Logout
+document.getElementById("logoutBtn").addEventListener("click",logout);
+
+async function logout(){
+
+    await signOut(auth);
+
+    window.location.href="login.html";
 
 }
