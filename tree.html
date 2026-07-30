@@ -80,9 +80,7 @@ button:hover{
 </header>
 
 <div class="card" id="treeData">
-
 Loading tree...
-
 </div>
 
 <br>
@@ -102,85 +100,116 @@ getDoc
 }
 from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-const firebaseConfig={
+const firebaseConfig = {
 
 apiKey:"AIzaSyD2XTkIln4iMgR_lE6sDlqI_O8NaTV5ebo",
-
 authDomain:"tree-log-42cf3.firebaseapp.com",
-
 projectId:"tree-log-42cf3",
-
 storageBucket:"tree-log-42cf3.firebasestorage.app",
-
 messagingSenderId:"580957773231",
-
 appId:"1:580957773231:web:d9a8301c3a869e157fa35a"
 
 };
 
-const app=initializeApp(firebaseConfig);
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 
-const db=getFirestore(app);
-
-const params=new URLSearchParams(window.location.search);
-
-const id=params.get("id");
+const params = new URLSearchParams(window.location.search);
+const id = params.get("id");
 
 async function loadTree(){
 
-if(!id){
+    if(!id){
+        document.getElementById("treeData").innerHTML="❌ No Tree ID Provided";
+        return;
+    }
 
-document.getElementById("treeData").innerHTML="❌ No Tree ID Provided";
+    const ref = doc(db,"trees",id);
+    const snap = await getDoc(ref);
 
-return;
+    if(!snap.exists()){
+        document.getElementById("treeData").innerHTML="❌ Tree Not Found";
+        return;
+    }
 
-}
+    const tree = snap.data();
 
-const ref=doc(db,"trees",id);
+    document.getElementById("treeData").innerHTML = `
 
-const snap=await getDoc(ref);
+    <h2>${id}</h2>
 
-if(!snap.exists()){
+    <img id="treeImage" alt="Tree Image">
 
-document.getElementById("treeData").innerHTML="❌ Tree Not Found";
+    <p><b>Common Name:</b> ${tree["Common Name"] || "N/A"}</p>
 
-return;
+    <p><b>Scientific Name:</b> ${tree["Scientific Name"] || "N/A"}</p>
 
-}
+    <p><b>Age:</b> ${tree["Age"] || "N/A"}</p>
 
-const tree=snap.data();
+    <p><b>Location:</b> ${tree["Location"] || "N/A"}</p>
 
-document.getElementById("treeData").innerHTML=`
+    <h3>QR Code</h3>
 
-<h2>${id}</h2>
+    <div id="qrcode"></div>
 
-<img
-src="images/${id}.jpg"
-onerror="this.src='images/default.jpg'">
+    `;
 
-<p><b>Common Name:</b> ${tree["Common Name"]||"N/A"}</p>
+    const img = document.getElementById("treeImage");
 
-<p><b>Scientific Name:</b> ${tree["Scientific Name"]||"N/A"}</p>
+    const filenames = [
 
-<p><b>Age:</b> ${tree["Age"]||"N/A"}</p>
+        `${id}.jpg`,
+        `${id}.png`,
+        `${id}.jpeg`,
+        `${id}.JPG`,
+        `${id}.PNG`,
+        `${id}.JPEG`,
 
-<p><b>Location:</b> ${tree["Location"]||"N/A"}</p>
+        id.replace("TR","TRO") + ".jpg",
+        id.replace("TR","TRO") + ".png",
+        id.replace("TR","TRO") + ".jpeg",
+        id.replace("TR","TRO") + ".JPG",
+        id.replace("TR","TRO") + ".PNG",
+        id.replace("TR","TRO") + ".JPEG"
 
-<h3>QR Code</h3>
+    ];
 
-<div id="qrcode"></div>
+    let current = 0;
 
-`;
+    function tryImage(){
 
-new QRCode(document.getElementById("qrcode"),{
+        if(current >= filenames.length){
 
-text:window.location.href,
+            img.style.display = "none";
 
-width:180,
+            const msg = document.createElement("p");
+            msg.style.color = "#888";
+            msg.innerHTML = "📷 Image not available";
+            img.parentNode.insertBefore(msg, img.nextSibling);
 
-height:180
+            return;
+        }
 
-});
+        img.src = "images/" + filenames[current];
+
+        img.onerror = function(){
+
+            current++;
+            tryImage();
+
+        };
+
+    }
+
+    tryImage();
+
+    new QRCode(document.getElementById("qrcode"),{
+
+        text:window.location.href,
+        width:180,
+        height:180
+
+    });
 
 }
 
