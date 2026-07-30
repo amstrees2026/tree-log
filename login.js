@@ -5,7 +5,7 @@ import {
     signInWithEmailAndPassword
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
-// Firebase Config
+// Firebase Configuration
 const firebaseConfig = {
 
     apiKey: "AIzaSyD2XTkILn4iMgR_LE6sDlqI_08NaTV5ebo",
@@ -22,17 +22,40 @@ const firebaseConfig = {
 
 };
 
+// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
 const auth = getAuth(app);
 
+// Login Button
 document.getElementById("loginBtn").addEventListener("click", login);
+
+// Allow Enter key to login
+document.addEventListener("keydown", function(event){
+
+    if(event.key==="Enter"){
+
+        login();
+
+    }
+
+});
 
 async function login(){
 
-    const email = document.getElementById("email").value.trim();
+    const email=document.getElementById("email").value.trim();
 
-    const password = document.getElementById("password").value;
+    const password=document.getElementById("password").value;
+
+    if(email==="" || password===""){
+
+        document.getElementById("status").style.color="red";
+
+        document.getElementById("status").innerHTML="Please enter your email and password.";
+
+        return;
+
+    }
 
     try{
 
@@ -40,7 +63,7 @@ async function login(){
 
         document.getElementById("status").style.color="green";
 
-        document.getElementById("status").innerHTML="✅ Login Successful";
+        document.getElementById("status").innerHTML="✅ Login Successful! Redirecting...";
 
         setTimeout(function(){
 
@@ -54,7 +77,7 @@ async function login(){
 
         document.getElementById("status").style.color="red";
 
-        document.getElementById("status").innerHTML=error.message;
+        document.getElementById("status").innerHTML="❌ " + error.message;
 
     }
 
